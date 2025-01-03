@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Landing Page</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="newgame.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to Our Project</h1>
+    </header>
+
+    <div class="container">
+      <!-- User Registration 1 -->
+      <div class="registration">
+        <h2>User Registration 1</h2>
+        <form id="registrationForm1">
+          <input
+            type="text"
+            id="name1"
+            placeholder="Enter your name"
+            required
+          />
+          <input
+            type="email"
+            id="email1"
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            id="password1"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
+
+      <!-- User Registration 2 -->
+      <div class="registration">
+        <h2>User Registration 2</h2>
+        <form id="registrationForm2">
+          <input
+            type="text"
+            id="name2"
+            placeholder="Enter your name"
+            required
+          />
+          <input
+            type="email"
+            id="email2"
+            placeholder="Enter your email"
+            required
+          />
+          <input
+            type="password"
+            id="password2"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
+
+      <!-- Game Options -->
+      <div class="buttons" id="gameButtons" style="display: none">
+        <div class="gametext"><b>Choose a game</b></div>
+        <button onclick="startGame('rock.html')">Rock paper scissor</button>
+        <button onclick="startGame('xo.html')">Tic Tac Toe</button>
+        <button onclick="startGame('casino.html')">Guess & Bet</button>
+        <button onclick="startGame('ludo.html')">Ludo</button>
+      </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script type="module" src="newgame.js"></script>
+  </body>
+</html>
