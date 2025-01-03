@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplayer Matka Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #ee99e1, #5ddaea);
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        margin: 20px auto;
+        max-width: 600px;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #388e3c;
+      }
+
+      .result {
+        font-size: 20px;
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      .winner {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .loser {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .spin-container {
+        margin: 20px auto;
+        width: 150px;
+        height: 150px;
+        border: 5px solid #ffffff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffffff;
+        background: radial-gradient(circle, #c92121, #ff9a9e);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .spin-container.animate {
+        animation: spin 2s ease-in-out;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .goBackHome {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Guess & Bet</h1>
+    <div class="container">
+      <h2>Player 1</h2>
+      <p id="player1NameDisplay"></p>
+      <input
+        type="number"
+        id="player1Number"
+        placeholder="Guess a number (0-9)"
+        min="0"
+        max="9"
+      />
+      <input
+        type="number"
+        id="player1Bet"
+        placeholder="Enter your bet (₹)"
+        min="1"
+      />
+
+      <h2>Player 2</h2>
+      <p id="player2NameDisplay"></p>
+      <input
+        type="number"
+        id="player2Number"
+        placeholder="Guess a number (0-9)"
+        min="0"
+        max="9"
+      />
+      <input
+        type="number"
+        id="player2Bet"
+        placeholder="Enter your bet (₹)"
+        min="1"
+      />
+
+      <button onclick="startGame()">Spin the Wheel</button>
+    </div>
+
+    <div class="spin-container" id="spinContainer">0</div>
+
+    <div class="container result" id="result"></div>
+
+    <div class="goBackHome">
+      <button id="back-home" onclick="goBackHome()">Back to Home</button>
+    </div>
+
+    <script>
+      // Fetch usernames from sessionStorage
+      const player1Name = localStorage.getItem("user1") || "user1";
+      const player2Name = localStorage.getItem("user2") || "user1";
+
+      // Display fetched usernames
+      document.getElementById("player1NameDisplay").textContent = player1Name;
+      document.getElementById("player2NameDisplay").textContent = player2Name;
+
+      function startGame() {
+        const player1Number = parseInt(
+          document.getElementById("player1Number").value
+        );
+        const player1Bet = parseInt(
+          document.getElementById("player1Bet").value
+        );
+
+        const player2Number = parseInt(
+          document.getElementById("player2Number").value
+        );
+        const player2Bet = parseInt(
+          document.getElementById("player2Bet").value
+        );
+
+        const resultDiv = document.getElementById("result");
+        const spinContainer = document.getElementById("spinContainer");
+
+        if (
+          isNaN(player1Number) ||
+          isNaN(player2Number) ||
+          isNaN(player1Bet) ||
+          isNaN(player2Bet) ||
+          player1Number < 0 ||
+          player1Number > 9 ||
+          player2Number < 0 ||
+          player2Number > 9
+        ) {
+          resultDiv.textContent =
+            "Please provide valid inputs for both players.";
+          resultDiv.className = "result loser";
+          return;
+        }
+
+        spinContainer.classList.add("animate");
+        setTimeout(() => {
+          spinContainer.classList.remove("animate");
+          const winningNumber = Math.floor(Math.random() * 10);
+          spinContainer.textContent = winningNumber;
+
+          let message = `Winning Number: ${winningNumber}<br>`;
+          let player1Won = player1Number === winningNumber;
+          let player2Won = player2Number === winningNumber;
+
+          if (player1Won && player2Won) {
+            message += `${player1Name} and ${player2Name} both win!`;
+            resultDiv.className = "result winner";
+          } else if (player1Won) {
+            message += `${player1Name} wins! ${player2Name} loses.`;
+            resultDiv.className = "result winner";
+          } else if (player2Won) {
+            message += `${player2Name} wins! ${player1Name} loses.`;
+            resultDiv.className = "result winner";
+          } else {
+            message += `No one wins. Try again!`;
+            resultDiv.className = "result loser";
+          }
+
+          resultDiv.innerHTML = message;
+        }, 2000);
+      }
+      function goBackHome() {
+        window.location.href = "newgame.html";
+      }
+    </script>
+  </body>
+</html>

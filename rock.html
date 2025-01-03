@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #ee99e1, #5ddaea);
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .scoreboard {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5rem;
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+      }
+
+      .score {
+        background-color: #fffacd;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      #user1-score,
+      #user2-score {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .msg-container {
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+
+      #msg {
+        display: inline-block;
+        background-color: #20b2aa;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-shadow: 1px 1px #000;
+      }
+
+      .choices {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        margin-top: 20px;
+      }
+
+      .choice {
+        height: 10rem;
+        width: 10rem;
+        background-color: rgb(198, 208, 0);
+        border: none;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.3s;
+      }
+      .choice img {
+        height: 9rem;
+        width: 9rem;
+        border-radius: 50%;
+      }
+
+      .choice:hover {
+        transform: scale(1.1);
+        background-color: rgb(243, 244, 248);
+        color: green;
+      }
+      .goBackHome {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+      }
+      #back-home {
+  position: absolute;
+  bottom: 0%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  background-color: #081b31;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+      #back-home:hover {
+        background-color: #e9befc;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+
+    <div class="scoreboard">
+      <div class="score">
+        <p id="user1-score">0</p>
+        <p id="user1-name">Player 1</p>
+      </div>
+      <div class="score">
+        <p id="user2-score">0</p>
+        <p id="user2-name">Player 2</p>
+      </div>
+    </div>
+
+    <div class="msg-container">
+      <p id="msg">Player 1's Turn</p>
+    </div>
+
+    <!-- Player 1 Choices -->
+    <div class="choices" id="player1-choices">
+      <button class="choice" id="rock1">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="paper1">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="scissor1">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="paper1">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="scissor1">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+    </div>
+
+    <!-- Player 2 Choices -->
+    <div class="choices" id="player2-choices" style="display: none">
+      <button class="choice" id="rock2">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="paper2">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="scissor2">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="paper2">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+      <button class="choice" id="scissor2">
+        <img src="/rockpapersc.jpg" alt="" />
+      </button>
+    </div>
+
+    <div class="goBackHome">
+      <button id="back-home" onclick="goBackHome()">Back to Home</button>
+    </div>
+
+    <script>
+      const user1Name = localStorage.getItem("user1") || "Player 1";
+      const user2Name = localStorage.getItem("user2") || "Player 2";
+
+      let user1Score = 0;
+      let user2Score = 0;
+
+      let user1Choice = null;
+      let user2Choice = null;
+
+      document.getElementById("user1-name").innerText = user1Name;
+      document.getElementById("user2-name").innerText = user2Name;
+
+      const msg = document.querySelector("#msg");
+      const user1ScoreElem = document.querySelector("#user1-score");
+      const user2ScoreElem = document.querySelector("#user2-score");
+
+      const player1Choices = document.querySelector("#player1-choices");
+      const player2Choices = document.querySelector("#player2-choices");
+
+      const resetChoices = () => {
+        user1Choice = null;
+        user2Choice = null;
+        player1Choices.style.display = "flex";
+        player2Choices.style.display = "none";
+        msg.innerText = `${user1Name}'s Turn`;
+        msg.style.backgroundColor = "#20b2aa";
+      };
+
+      const determineWinner = () => {
+        if (user1Choice === user2Choice) {
+          msg.innerText = `It's a Draw! Both chose ${user1Choice}.`;
+          msg.style.backgroundColor = "#ffa500";
+        } else {
+          let user1Wins = false;
+          if (user1Choice === "rock") {
+            user1Wins = user2Choice === "scissor";
+          } else if (user1Choice === "paper") {
+            user1Wins = user2Choice === "rock";
+          } else if (user1Choice === "scissor") {
+            user1Wins = user2Choice === "paper";
+          }
+
+          if (user1Wins) {
+            user1Score++;
+            user1ScoreElem.innerText = user1Score;
+            msg.innerText = `${user1Name}'s ${user1Choice} beats ${user2Name}'s ${user2Choice}!`;
+            msg.style.backgroundColor = "green";
+          } else {
+            user2Score++;
+            user2ScoreElem.innerText = user2Score;
+            msg.innerText = `${user2Name}'s ${user2Choice} beats ${user1Name}'s ${user1Choice}!`;
+            msg.style.backgroundColor = "red";
+          }
+        }
+
+        if (user1Score === 5) {
+          msg.innerText = `${user1Name} Wins the Game! 🎉`;
+          player1Choices.style.display = "none";
+          player2Choices.style.display = "none";
+        } else if (user2Score === 5) {
+          msg.innerText = `${user2Name} Wins the Game! 🎉`;
+          player1Choices.style.display = "none";
+          player2Choices.style.display = "none";
+        } else {
+          setTimeout(resetChoices, 2000);
+        }
+      };
+
+      player1Choices.querySelectorAll(".choice").forEach((button) => {
+        button.addEventListener("click", () => {
+          user1Choice = button.id.replace("1", "");
+          player1Choices.style.display = "none";
+          player2Choices.style.display = "flex";
+          msg.innerText = `${user2Name}'s Turn`;
+        });
+      });
+
+      player2Choices.querySelectorAll(".choice").forEach((button) => {
+        button.addEventListener("click", () => {
+          user2Choice = button.id.replace("2", "");
+          determineWinner();
+        });
+      });
+
+      function goBackHome() {
+        window.location.href = "newgame.html";
+      }
+    </script>
+  </body>
+</html>
